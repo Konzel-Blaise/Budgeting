@@ -27,12 +27,15 @@ MASTER = load_expense_history("/Users/blazer/PyProjects/Personal_Finance/Budgeti
 MASTER = MASTER[0]
 print(MASTER)
 
+
 # Append or concatenate all DataFrames in the list
 RECENT = pd.concat(dataframes, ignore_index=True)
 # print(f'{RECENT}')
 
+
 # this was used to write original file - probably wont need again
 #RECENT.to_csv('MASTER_SPEND_HISTORY.csv', index=False)  
+
 
 #%% Update MASTER 
 
@@ -72,7 +75,16 @@ account_tot = RECENT.groupby(["Category"]).sum()
 # plt.bar(categories, counts, width=0.5)
 
 
+#---------------------------------------------------------------------
 
-### did the commit work? 
+# need to beef out plotting 
+# go two routes with this monthly and total 
+
+
+# -------monthly stats 
+
+# -------total stats 
+
+
 
 
