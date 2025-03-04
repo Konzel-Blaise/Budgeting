@@ -5,9 +5,12 @@
 # import numpy as np
 # import csv
 import pandas as pd
-# import os
+import os
 import matplotlib.pyplot as plt
 from func_load_cap1 import *
+import plotly.express as px
+import plotly.graph_objects as go 
+
 
 #import new data from downlaods 
 path = "/Users/blazer/Downloads"
@@ -15,7 +18,7 @@ search_string = 'transaction_download'
 
 dataframes = load_expense_history(path, search_string)
 
-print("NEW DATA IMPORTED....PLEASE REVIEW")
+print("DATA IMPORTED....PLEASE REVIEW")
 print(dataframes)
 
 
@@ -27,10 +30,11 @@ MASTER = load_expense_history("/Users/blazer/PyProjects/Personal_Finance/Budgeti
 MASTER = MASTER[0]
 print(MASTER)
 
-
-# Append or concatenate all DataFrames in the list
-RECENT = pd.concat(dataframes, ignore_index=True)
-# print(f'{RECENT}')
+if dataframes == []: 
+    print("--------NO NEW DATA--------")
+else: 
+    # Append or concatenate all DataFrames in the list
+    RECENT = pd.concat(dataframes, ignore_index=True)
 
 
 # this was used to write original file - probably wont need again
@@ -61,23 +65,24 @@ plt.title('Expenditure Distribution')
 plt.show()
 #
 
+#%%
+
+
+
 # try to group each type of expenditure and total - histogram
 
-account_tot = RECENT.groupby(["Category"]).sum()
-
-# plt.figure()
-# plt.hist(account_tot["Debit"], bins=8)
-# plt.show()
+account_tot = MASTER.groupby(["Category"]).sum()
 
 
-# categories = account_tot['Debit'].value_counts().index
-# counts = account_tot['Debit'].value_counts().values
-# plt.bar(categories, counts, width=0.5)
+fig = go.Figure([go.Histogram(x=MASTER['Category'], y=MASTER['Debit'])]).show(renderer='browser')
+
+fig2 = px.histogram(MASTER, x="Category", y="Debit").show(renderer='browser')
+
 
 
 #---------------------------------------------------------------------
 
-# need to beef out plotting 
+
 # go two routes with this monthly and total 
 
 

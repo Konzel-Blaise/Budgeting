@@ -43,18 +43,32 @@ def load_expense_history(pathname, search_string):
         df = pd.read_csv(files)
         newest_expenses.append(df)
 
-    #if these are transaction downloads recently downloaded from cap1 we want to import and auto move files to archive. 
-    if search_string == "transaction_download":
-        # could be improved, assumes only 2 files (Savor and Venture)
-        full_path = [pathname + "/" + files_containing_string[0], pathname + "/" + files_containing_string[1]]
-        for f in full_path: 
-            shutil.move(f, "/Users/blazer/PyProjects/Personal_Finance/Cap1_Archive")
+        #if these are transaction downloads recently downloaded from cap1 we want to import and auto move files to archive. 
+        if search_string == "transaction_download" and files>0:
+            # could be improved, assumes only 2 files (Savor and Venture)
+            full_path = [pathname + "/" + files_containing_string[0], pathname + "/" + files_containing_string[1]]
+            for f in full_path: 
+                shutil.move(f, "/Users/blazer/PyProjects/Personal_Finance/Cap1_Archive")
 
     #change back to working directory
     os.chdir(working_directoy)
     return(newest_expenses) 
 
+
 # plotting funcationality 
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
