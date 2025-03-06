@@ -7,10 +7,11 @@
 import pandas as pd
 import os
 import matplotlib.pyplot as plt
+# this may be pulling from local copy.. need to fix 
 from func_load_cap1 import *
 import plotly.express as px
 import plotly.graph_objects as go 
-
+from dash import Dash, html, dcc, dash_table
 
 #import new data from downlaods 
 path = "/Users/blazer/Downloads"
@@ -32,11 +33,12 @@ print(MASTER)
 
 if dataframes == []: 
     print("--------NO NEW DATA--------")
+    
+    
 else: 
     # Append or concatenate all DataFrames in the list
     RECENT = pd.concat(dataframes, ignore_index=True)
-
-
+    
 # this was used to write original file - probably wont need again
 #RECENT.to_csv('MASTER_SPEND_HISTORY.csv', index=False)  
 
@@ -68,24 +70,51 @@ plt.show()
 #%%
 
 
-
 # try to group each type of expenditure and total - histogram
 
 account_tot = MASTER.groupby(["Category"]).sum()
 
 
-fig = go.Figure([go.Histogram(x=MASTER['Category'], y=MASTER['Debit'])]).show(renderer='browser')
+# fig = go.Figure([go.Histogram(x=MASTER['Category'], y=MASTER['Debit'])]).show(renderer='browser')
 
-fig2 = px.histogram(MASTER, x="Category", y="Debit").show(renderer='browser')
+# fig2 = px.histogram(MASTER, x="Category", y="Debit").show(renderer='browser')
 
-
-
-#---------------------------------------------------------------------
+fig2 = px.histogram(MASTER, x="Category", y="Debit")
 
 
+# Dash Definition --------------------
+app = Dash()
+
+app.layout = html.Div(children=[
+    
+    #Historgram Definition
+    html.Div([
+        html.H1(children='Cap1 Data Viewer'),
+        html.Div(children='Viewing Histogram'),
+        dcc.Graph(
+            id='graph1',
+            figure=fig2
+        ),
+    ]),
+    
+    #Table Definition
+    html.Div([
+        html.Div(children='Viewing Table'),
+        dash_table.DataTable(data=MASTER.to_dict('records'), page_size=10)
+        # dcc.Graph(
+        #     id='graph2',
+        #     figure=fig3
+        
+        # ), 
+    ]),                  
+])
+           
+app.run(debug=True, port=8054)
+#http://127.0.0.1:8054/
+
+
+#----------------------
 # go two routes with this monthly and total 
-
-
 # -------monthly stats 
 
 # -------total stats 
