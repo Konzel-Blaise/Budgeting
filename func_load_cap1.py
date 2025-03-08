@@ -38,13 +38,13 @@ def load_expense_history(pathname, search_string):
     
     newest_expenses = []
     #reading in both bank statements
-    for files in files_containing_string:
+    for i, files in enumerate(files_containing_string):
         # print(f"imported {files} statement successfully")
         df = pd.read_csv(files)
         newest_expenses.append(df)
 
         #if these are transaction downloads recently downloaded from cap1 we want to import and auto move files to archive. 
-        if search_string == "transaction_download" and files>0:
+        if search_string == "transaction_download" and i>0:
             # could be improved, assumes only 2 files (Savor and Venture)
             full_path = [pathname + "/" + files_containing_string[0], pathname + "/" + files_containing_string[1]]
             for f in full_path: 
